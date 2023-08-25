@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Nav from "./auth/Nav";
-import prisma from "./components/prisma";
-import AddProduct from "./components/AddProduct";
+import prisma from "../prisma/prisma";
+import ProductsPage from "@/components/ProductsPage";
+import AddProduct from "@/components/AddProduct";
 
 export default async function Home() {
   // const userEmail = "cujba.tiberiu@gmail.com";
@@ -14,8 +15,8 @@ export default async function Home() {
   return (
     <main className="bg-slate-800 h-screen w-screen">
       <Nav />
-      {/* {user?.roles.includes("ADMIN") ? <AddProduct /> : <h1>Hello</h1>} */}
       <AddProduct />
+      {/* {user?.roles.includes("ADMIN") ? <AddProduct /> : <h1>Hello</h1>} */}
     </main>
   );
 }

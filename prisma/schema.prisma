@@ -69,7 +69,7 @@ model Product {
   description String?
   price       Decimal
   category    Category
-  images      String[]
+  images      String?
   published   Boolean  @default(false)
 }
 

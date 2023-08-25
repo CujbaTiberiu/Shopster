@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { Category } from "@prisma/client";
+import { CldUploadButton } from "next-cloudinary";
 
 export default function AddProduct() {
   //   const formik = useFormik({
@@ -35,36 +36,37 @@ export default function AddProduct() {
   // value={formik.values.price}
   // onBlur={formik.handleBlur}
   //   });
+  // q: Why photo upload is not working? // A: Because the form is not multipart/form-data
 
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState("");
 
   async function createProduct(ev) {
     ev.preventDefault();
     const data = { name, category, description, price, images };
     await axios.post("/api/addProduct", data);
+    setName("");
+    setCategory("");
+    setDescription("");
+    setPrice("");
+    setImages("");
   }
 
-  function uploadImages(ev) {
-    const files = ev.target?.files;
-    if (files?.length > 0) {
-      const formData = new FormData();
-      for (const file of files) {
-        formData.append("files", file);
-      }
-      axios.post("/api/uploadImgs", formData).then((response) => {
-        const uploadedImages = response.data;
-        setImages(uploadedImages);
-      });
-    }
+  // function handleUploadComplete(publicIds) {
+  //   setUploadedImages(publicIds);
+  // }
+
+  function handleUploadSuccess(result) {
+    const uploadedImage = result.info.secure_url; // Estrai l'URL dell'immagine dall'oggetto result
+    setImages(uploadedImage); // Salva l'URL nello stato
   }
 
   return (
     <div className="bg-slate-500  flex justify-center">
-      <form onSubmit={createProduct}>
+      <form onSubmit={createProduct} encType="multipart/form-data">
         <div className="flex flex-col justify-center">
           <label htmlFor="name">Name</label>
           <input
@@ -110,16 +112,26 @@ export default function AddProduct() {
             onChange={(e) => setPrice(e.target.value)}
           />
         </div>
+        <CldUploadButton
+          uploadPreset="ml_default"
+          onSuccess={handleUploadSuccess}
+        />
         <div>
-          <input
-            type="file"
-            name="file"
-            onChange={uploadImages}
-            className="cursor-pointer"
-          />
+          {images && (
+            <div>
+              <img
+                src={images}
+                alt="Uploaded Product"
+                style={{
+                  width: "100%",
+                  borderRadius: "20px",
+                }}
+              />
+            </div>
+          )}
         </div>
         <div>
-          <button type="submit" className=" px-4 py-2 bg-blue-900">
+          <button type="submit" className="my-2 px-4 py-2 bg-blue-900">
             Save Product
           </button>
         </div>
