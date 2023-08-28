@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import { Category } from "@prisma/client";
 import { CldUploadButton } from "next-cloudinary";
+import { BsUpload } from "react-icons/bs";
 
 export default function AddProduct() {
   //   const formik = useFormik({
@@ -68,8 +69,11 @@ export default function AddProduct() {
     <div className="bg-slate-500  flex justify-center">
       <form onSubmit={createProduct} encType="multipart/form-data">
         <div className="flex flex-col justify-center">
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name" className="pt-2 pb-1">
+            Name
+          </label>
           <input
+            className="rounded-md py-2"
             type="name"
             value={name}
             placeholder="Product name"
@@ -77,12 +81,18 @@ export default function AddProduct() {
           />
         </div>
         <div className="flex flex-col justify-center">
-          <label htmlFor="category">Category</label>
+          <label htmlFor="category" className="pt-2 pb-1">
+            Category
+          </label>
           <select
+            className="rounded-md py-2"
             value={category}
             placeholder="Choose category"
             onChange={(e) => setCategory(e.target.value)}
           >
+            q:Why it doesn't get first value? // A: Because the first value is
+            empty
+            <option value="">Choose category</option>
             <option value={Category.SMARTPHONE}>Smartphone</option>
             <option value={Category.PC}>PC</option>
             <option value={Category.TABLET}>Tablet</option>
@@ -91,8 +101,11 @@ export default function AddProduct() {
           </select>
         </div>
         <div className="flex flex-col justify-center">
-          <label htmlFor="description">Description</label>
+          <label htmlFor="description" className="pt-2 pb-1">
+            Description
+          </label>
           <textarea
+            className="rounded-md py-2"
             type="text"
             value={description}
             rows="5"
@@ -102,8 +115,11 @@ export default function AddProduct() {
           />
         </div>
         <div className="flex flex-col justify-center">
-          <label htmlFor="price">Price</label>
+          <label htmlFor="price" className="pt-2 pb-1">
+            Price
+          </label>
           <input
+            className="rounded-md py-2"
             type="number"
             value={price}
             min="0"
@@ -112,26 +128,33 @@ export default function AddProduct() {
             onChange={(e) => setPrice(e.target.value)}
           />
         </div>
-        <CldUploadButton
-          uploadPreset="ml_default"
-          onSuccess={handleUploadSuccess}
-        />
+        <label htmlFor="file" className="pt-2 pb-1">
+          Photo
+        </label>
+        <div className="flex justify-center">
+          <CldUploadButton
+            uploadPreset="ml_default"
+            onSuccess={handleUploadSuccess}
+            className="mb-2 w-full h-20 bg-gray-400 border-dashed border-2 border-gray-600 rounded-md relative"
+          />
+          <BsUpload className="absolute mt-12" />
+        </div>
         <div>
           {images && (
-            <div>
+            <div className="flex justify-center">
               <img
                 src={images}
                 alt="Uploaded Product"
-                style={{
-                  width: "100%",
-                  borderRadius: "20px",
-                }}
+                className="w-64 h-auto object-cover"
               />
             </div>
           )}
         </div>
-        <div>
-          <button type="submit" className="my-2 px-4 py-2 bg-blue-900">
+        <div className="text-center">
+          <button
+            type="submit"
+            className="my-2 px-4 py-2 bg-teal-700 rounded-md"
+          >
             Save Product
           </button>
         </div>

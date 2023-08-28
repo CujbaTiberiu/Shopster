@@ -1,10 +1,9 @@
 import Image from "next/image";
-import Nav from "./auth/Nav";
-import prisma from "../prisma/prisma";
-import Products from "../components/Products";
-import Hero from "@/components/Hero";
+import prisma from "../../prisma/prisma";
+import AddProduct from "@/app/dashboard/AddProduct";
+import Nav from "../auth/Nav";
 
-export default async function Home() {
+export default async function Dashboard() {
   // const userEmail = "cujba.tiberiu@gmail.com";
   // const user = await prisma.user.findUnique({
   //   where: { email: userEmail },
@@ -13,10 +12,9 @@ export default async function Home() {
   // console.log(user);
 
   return (
-    <main className="bg-slate-800 h-screen w-full">
+    <main className="bg-slate-800 h-screen w-screen">
       <Nav />
-      <Hero />
-      <Products />
+      <AddProduct />
       {/* {user?.roles.includes("ADMIN") ? <AddProduct /> : <h1>Hello</h1>} */}
     </main>
   );

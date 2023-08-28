@@ -2,11 +2,11 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{js,jsx}',
-    './components/**/*.{js,jsx}',
-    './app/**/*.{js,jsx}',
-    './src/**/*.{js,jsx}',
-	],
+    './pages/**/*.{js,jsx,ts,tsx}',
+    './components/**/*.{js,jsx,ts,tsx}',
+    './app/**/*.{js,jsx,ts,tsx}',
+    './src/**/*.{js,jsx,ts,tsx}',
+  ],
   theme: {
     container: {
       center: true,
@@ -16,6 +16,9 @@ module.exports = {
       },
     },
     extend: {
+      gridTemplateColumns: {
+        fluid: "repeat(auto-fit,minmax(15rem,1fr))",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: 0 },

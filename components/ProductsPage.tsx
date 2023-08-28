@@ -1,4 +1,12 @@
 import { Product } from "@/types/product";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Typography,
+} from "@mui/material";
 import Image from "next/image";
 import React from "react";
 
@@ -9,52 +17,38 @@ interface ProductsPageProps {
 const ProductsPage: React.FC<ProductsPageProps> = ({ product }) => {
   console.log("Product:", product);
   return (
-    <>
-      {product && (
-        <div className="bg-gray-800 text-white p-4 rounded-lg my-6 mt-14">
-          {/*card title */}
-          <div className="py-6">
-            <h1 className="text-xl font-extrabold text-center">
-              {product.title}
-            </h1>
-          </div>
-          {/*card info */}
-          <div className="py-8">
-            <div className="flex justify-between">
-              <div>{/* <p key={}>{}</p> */}</div>
-              <div>
-                <p
-                //</div> className={
-                // rating
-                //   ? "px-4 py-3 my-2 bg-yellow-400 inline-block rounded-lg"
-                //   : "px-4 py-3 my-2 bg-green-400 inline-block rounded-lg"
-                //}
-                >
-                  {}
-                </p>
-              </div>
-            </div>
-          </div>
-          {/*card img */}
-          <div>
-            {/* <video
-          src={productTrailer}
-          className="container"
-          controls
-          onMouseEnter={(e) => startPreview(product.id)}
-          onMouseLeave={(e) => stopPreview()}
-        ></video> */}
-            <Image
-              className="h-60 rounded-lg"
-              src={product.thumbnail}
-              alt={product.title}
-              width={1000}
-              height={1000}
-            />
-          </div>
-        </div>
-      )}
-    </>
+    <Card
+      sx={{ maxWidth: 345 }}
+      className="shadow-lg shadow-teal-900 hover:shadow-teal-600 hover:scale-105 transition duration-500 ease-in-out"
+    >
+      <CardMedia
+        className="rounded-lg"
+        sx={{ height: 250, width: 250, margin: "auto", objectFit: "contain" }}
+        image={product.images}
+        title="product image"
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          {product.name}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {product.description.substring(0, 100) + "..."}
+        </Typography>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          className="text-lg text-emerald-600 mt-2"
+        >
+          {product.price} $
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button size="small" className="text-neutral-900 bg-yellow-200">
+          Buy
+        </Button>
+        <Button size="small">Details</Button>
+      </CardActions>
+    </Card>
   );
 };
 
