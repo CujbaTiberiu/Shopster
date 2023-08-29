@@ -1,3 +1,4 @@
+"use client";
 import { Product } from "@/types/product";
 import {
   Button,
@@ -9,12 +10,21 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import React from "react";
+import { useDispatch } from "react-redux";
 
 interface ProductsPageProps {
   product: Product;
 }
 
 const ProductsPage: React.FC<ProductsPageProps> = ({ product }) => {
+  const dispatch = useDispatch();
+  const addToCartHandler = () => {
+    dispatch({
+      type: "ADD_ITEM_TO_CART",
+      payload: product,
+    });
+  };
+
   console.log("Product:", product);
   return (
     <Card
@@ -43,7 +53,11 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ product }) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" className="text-neutral-900 bg-yellow-200">
+        <Button
+          size="small"
+          className="text-neutral-900 bg-yellow-200"
+          onClick={() => addToCartHandler()}
+        >
           Buy
         </Button>
         <Button size="small">Details</Button>
