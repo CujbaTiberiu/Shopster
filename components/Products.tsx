@@ -1,5 +1,5 @@
-import ProductsPage from "@/components/ProductsPage";
-import { Product } from "@/types/product";
+import ProductsPage from "../components/ProductsPage";
+import { Product } from "../types/product";
 import React from "react";
 
 const fetchProducts = async () => {
@@ -22,7 +22,7 @@ export default async function Products() {
   console.log("Products fetch:", products);
 
   return (
-    <div className="grid place-content-center md:grid-cols-2 lg:grid-cols-4 gap-4 md:mx-10">
+    <div className="grid place-content-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:mx-10">
       {products?.map((product: Product) => (
         <ProductsPage product={product} />
       ))}

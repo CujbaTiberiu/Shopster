@@ -1,4 +1,5 @@
 "use client";
+import { addToCart } from "../redux/reducers/cartSlice";
 import { Product } from "@/types/product";
 import {
   Button,
@@ -19,10 +20,7 @@ interface ProductsPageProps {
 const ProductsPage: React.FC<ProductsPageProps> = ({ product }) => {
   const dispatch = useDispatch();
   const addToCartHandler = () => {
-    dispatch({
-      type: "ADD_ITEM_TO_CART",
-      payload: product,
-    });
+    dispatch(addToCart(product));
   };
 
   console.log("Product:", product);

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import prisma from "../../prisma/prisma";
-import AddProduct from "@/app/dashboard/AddProduct";
+import AddProduct from "../dashboard/AddProduct";
 import Nav from "../auth/Nav";
 
 export default async function Dashboard() {

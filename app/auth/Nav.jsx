@@ -2,7 +2,7 @@ import Link from "next/link";
 import Login from "./Login";
 import Logged from "./Logged";
 import { getServerSession } from "next-auth";
-import { outhOptions } from "@/pages/api/auth/[...nextauth]";
+import { outhOptions } from "../../pages/api/auth/[...nextauth]";
 import Image from "next/image";
 import { GrCart } from "react-icons/gr";
 

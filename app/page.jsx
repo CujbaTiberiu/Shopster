@@ -2,7 +2,7 @@ import Image from "next/image";
 import Nav from "./auth/Nav";
 import prisma from "../prisma/prisma";
 import Products from "../components/Products";
-import Hero from "@/components/Hero";
+import Hero from "../components/Hero";
 
 export default async function Home() {
   // const userEmail = "cujba.tiberiu@gmail.com";

@@ -56,10 +56,6 @@ export default function AddProduct() {
     setImages("");
   }
 
-  // function handleUploadComplete(publicIds) {
-  //   setUploadedImages(publicIds);
-  // }
-
   function handleUploadSuccess(result) {
     const uploadedImage = result.info.secure_url; // Estrai l'URL dell'immagine dall'oggetto result
     setImages(uploadedImage); // Salva l'URL nello stato
