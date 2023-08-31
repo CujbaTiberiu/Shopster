@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import img1 from "../public/images/img1.png";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
@@ -41,6 +41,17 @@ const Hero = () => {
   const goToSlide = (slideIndex) => {
     setCurrentIndex(slideIndex);
   };
+
+  useEffect(() => {
+    const slideInterval = setInterval(() => {
+      nextSlide();
+    }, 5000);
+
+    return () => {
+      clearInterval(slideInterval);
+    };
+  }, [currentIndex]);
+
   return (
     <div className="max-w-[1400px] h-[650px] w-full m-auto py-16 px-4 relative group">
       <div
@@ -60,7 +71,7 @@ const Hero = () => {
           <div
             key={slideIndex}
             onClick={() => goToSlide(slideIndex)}
-            className="text-2xl cursor-pointer"
+            className="text-2xl cursor-pointer text-teal-700 hover:text-teal-900"
           >
             <RxDotFilled />
           </div>

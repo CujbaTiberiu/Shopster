@@ -27,25 +27,30 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ product }) => {
   return (
     <Card
       sx={{ maxWidth: 300 }}
-      className="shadow-lg shadow-teal-900 hover:shadow-teal-600 hover:scale-105 transition duration-500 ease-in-out"
+      className="bg-cyan-950 pt-2 mt-2 text-white shadow-lg shadow-teal-900 hover:shadow-teal-600 hover:scale-105 transition duration-500 ease-in-out border border-sky-400"
     >
       <CardMedia
         className="rounded-lg"
-        sx={{ height: 200, width: 300, margin: "auto", objectFit: "fit" }}
+        sx={{ height: 300, width: 300, margin: "auto", objectFit: "fit" }}
         image={product.images}
         title="product image"
       />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+      <CardContent className="text-white">
+        <Typography
+          gutterBottom
+          variant="h5"
+          component="div"
+          className="text-center"
+        >
           {product.name}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2">
           {product.description.substring(0, 100) + "..."}
         </Typography>
         <Typography
           variant="body2"
           color="text.secondary"
-          className="text-lg text-emerald-600 mt-2"
+          className="text-2xl text-emerald-600 mt-2"
         >
           {product.price} $
         </Typography>

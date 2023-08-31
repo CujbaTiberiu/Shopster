@@ -14,7 +14,7 @@ export default async function Home() {
   // console.log(user);
 
   return (
-    <main className="bg-slate-800">
+    <main className="bg-slate-900">
       <Nav />
       <Hero />
       <Products />

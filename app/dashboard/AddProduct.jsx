@@ -62,8 +62,12 @@ export default function AddProduct() {
   }
 
   return (
-    <div className="bg-slate-500  flex justify-center">
-      <form onSubmit={createProduct} encType="multipart/form-data">
+    <div className="bg-slate-500  flex justify-center py-16">
+      <form
+        onSubmit={createProduct}
+        encType="multipart/form-data"
+        className="border border-teal-700 p-8 my-2 rounded-lg bg-slate-800"
+      >
         <div className="flex flex-col justify-center">
           <label htmlFor="name" className="pt-2 pb-1">
             Name
@@ -86,8 +90,6 @@ export default function AddProduct() {
             placeholder="Choose category"
             onChange={(e) => setCategory(e.target.value)}
           >
-            q:Why it doesn't get first value? // A: Because the first value is
-            empty
             <option value="">Choose category</option>
             <option value={Category.SMARTPHONE}>Smartphone</option>
             <option value={Category.PC}>PC</option>

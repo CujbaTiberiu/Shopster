@@ -13,6 +13,9 @@ import axios from "axios";
 import Image from "next/image";
 import React from "react";
 import { useSelector } from "react-redux";
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { addToCart, removeFromCart } from "../../redux/reducers/cartSlice";
 
 const Cart = () => {
   const products = useSelector((state: RootState) => state.cartSlice.items);
@@ -38,9 +41,23 @@ const Cart = () => {
     }, 0);
   };
 
+  const dispatch = useDispatch();
+
+  const addToCartHandler = (product) => {
+    dispatch(addToCart(product));
+  };
+  // const addToCartHandler = (product) => {
+  //   dispatch(addToCart(product));
+  // };
+
+  const removeFromCartHandler = (prods, uniqueProductId) => {
+    const newProducts = prods.filter((p) => p.id === uniqueProductId);
+    dispatch(removeFromCart(newProducts[0]));
+  };
+
   console.log("Unique products:", uniqueProducts);
   return (
-    <div className="pt-16">
+    <div className="pt-16 h-screen bg-slate-800">
       <h1 className="text-center text-white text-3xl py-10">Cart</h1>
 
       {!products.length ? (
@@ -59,22 +76,32 @@ const Cart = () => {
                   width={200}
                   height={120}
                 />
-                <div>
+                <div className="flex flex-col justify-center items-center py-1">
                   <h2 className="text-2xl text-teal-700">Name</h2>
                   <div className="pt-3">{uniqueProduct.name}</div>
                 </div>
-                <div>
+                <div className="flex flex-col justify-center items-center py-1">
                   <h2 className="text-2xl text-teal-700">Price</h2>
                   <div className="pt-3">{uniqueProduct.price} €</div>
                 </div>
-                <div>
+                <div className="flex flex-col justify-center items-center py-1">
                   <h2 className="text-2xl text-teal-700">Quantity</h2>
-                  <div className="pt-3">
-                    {calculateProductQuantity(uniqueProduct.id, products)}
+                  <div className="pt-3 flex justify-center items-center gap-1">
+                    <FaArrowAltCircleLeft
+                      className="text-red-500 cursor-pointer"
+                      onClick={() =>
+                        removeFromCartHandler(products, uniqueProduct.id)
+                      }
+                    />{" "}
+                    {calculateProductQuantity(uniqueProduct.id, products)}{" "}
+                    <FaArrowAltCircleRight
+                      className="text-green-500 cursor-pointer"
+                      onClick={() => addToCartHandler(uniqueProduct)}
+                    />
                   </div>
                   {/* <div className="pt-3">{products.filter(product.id => product.id === uniqueProduct.id).length}</div> */}
                 </div>
-                <div>
+                <div className="flex flex-col justify-center items-center py-1">
                   <h2 className="text-2xl text-teal-700">Total</h2>
                   <div className="pt-3">
                     {parseFloat(uniqueProduct.price) *
