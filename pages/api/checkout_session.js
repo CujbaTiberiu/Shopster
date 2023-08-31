@@ -23,7 +23,6 @@ export default async function handler(req, res) {
                             unit_amount: totalPrice, // Stripe expects amount in cents
                             product_data: {
                                 name: products.name, // Change to your product name
-                                price: products.price, // Change to your product price
                             },
                         },
                         quantity: 1,

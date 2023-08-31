@@ -1,6 +1,6 @@
 "use client";
 import { addToCart } from "../redux/reducers/cartSlice";
-import { Product } from "@/types/product";
+import { Product } from "../types/product";
 import {
   Button,
   Card,
@@ -26,12 +26,12 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ product }) => {
   console.log("Product:", product);
   return (
     <Card
-      sx={{ maxWidth: 345 }}
+      sx={{ maxWidth: 300 }}
       className="shadow-lg shadow-teal-900 hover:shadow-teal-600 hover:scale-105 transition duration-500 ease-in-out"
     >
       <CardMedia
         className="rounded-lg"
-        sx={{ height: 250, width: 250, margin: "auto", objectFit: "contain" }}
+        sx={{ height: 200, width: 300, margin: "auto", objectFit: "fit" }}
         image={product.images}
         title="product image"
       />

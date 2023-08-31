@@ -1,6 +1,6 @@
 "use client";
-import { RootState } from "@/redux/store/store";
-import { Product } from "@/types/product";
+import { RootState } from "../../redux/store/store";
+import { Product } from "../../types/product";
 import {
   Button,
   Card,
@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import axios from "axios";
+import Image from "next/image";
 import React from "react";
 import { useSelector } from "react-redux";
 
@@ -23,69 +24,79 @@ const Cart = () => {
     });
   };
 
+  const uniqueProducts = products?.filter(
+    (product, index, self) =>
+      index === self.findIndex((p) => p.id === product.id)
+  );
+
+  const calculateProductQuantity = (productId, productList) => {
+    return productList.reduce((acc, prod) => {
+      if (prod.id === productId) {
+        return acc + 1;
+      }
+      return acc;
+    }, 0);
+  };
+
+  console.log("Unique products:", uniqueProducts);
   return (
-    <>
-      <h1 className="text-center text-white text-3xl my-3">Cart</h1>
-      <button
-        type="button"
-        className="py-2 px-3 bg-green-300 text-xl"
-        onClick={paymentHandler}
-      >
-        Go to payment
-      </button>
+    <div className="pt-16">
+      <h1 className="text-center text-white text-3xl py-10">Cart</h1>
+
       {!products.length ? (
         <div className="text-center text-white text-3xl my-3">
           {" "}
           "Add some products to cart.."
         </div>
       ) : (
-        <div className="grid place-content-center md:grid-cols-2 lg:grid-cols-4 gap-4 md:mx-10">
-          {products.map((product: Product) => (
-            <Card
-              sx={{ maxWidth: 345 }}
-              className="shadow-lg shadow-teal-900 hover:shadow-teal-600 hover:scale-105 transition duration-500 ease-in-out"
+        <>
+          <div className="my-6">
+            {uniqueProducts.map((uniqueProduct: Product) => (
+              <div className="bg-white mx-4 rounded-lg p-6 my-3 flex sm:justify-between flex-col sm:flex-row justify-center items-center">
+                <Image
+                  src={uniqueProduct.images}
+                  alt={uniqueProduct.name}
+                  width={200}
+                  height={120}
+                />
+                <div>
+                  <h2 className="text-2xl text-teal-700">Name</h2>
+                  <div className="pt-3">{uniqueProduct.name}</div>
+                </div>
+                <div>
+                  <h2 className="text-2xl text-teal-700">Price</h2>
+                  <div className="pt-3">{uniqueProduct.price} €</div>
+                </div>
+                <div>
+                  <h2 className="text-2xl text-teal-700">Quantity</h2>
+                  <div className="pt-3">
+                    {calculateProductQuantity(uniqueProduct.id, products)}
+                  </div>
+                  {/* <div className="pt-3">{products.filter(product.id => product.id === uniqueProduct.id).length}</div> */}
+                </div>
+                <div>
+                  <h2 className="text-2xl text-teal-700">Total</h2>
+                  <div className="pt-3">
+                    {parseFloat(uniqueProduct.price) *
+                      calculateProductQuantity(uniqueProduct.id, products)}{" "}
+                    €
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className=" flex justify-center pb-4">
+            <button
+              type="button"
+              className="py-2 px-3 bg-green-300 text-xl rounded-md"
+              onClick={paymentHandler}
             >
-              <CardMedia
-                className="rounded-lg"
-                sx={{
-                  height: 250,
-                  width: 250,
-                  margin: "auto",
-                  objectFit: "contain",
-                }}
-                image={product.images}
-                title="product image"
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {product.name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {product.description}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  className="text-lg text-emerald-600 mt-2"
-                >
-                  {product.price} $
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button
-                  size="small"
-                  className="text-neutral-900 bg-yellow-200"
-                  // onClick={() => addToCartHandler()}
-                >
-                  Buy
-                </Button>
-                <Button size="small">Details</Button>
-              </CardActions>
-            </Card>
-          ))}
-        </div>
+              Go to payment
+            </button>
+          </div>
+        </>
       )}
-    </>
+    </div>
   );
 };
 

@@ -22,7 +22,7 @@ export default async function Products() {
   console.log("Products fetch:", products);
 
   return (
-    <div className="grid place-content-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:mx-10">
+    <div className="grid place-content-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:mx-10 py-10">
       {products?.map((product: Product) => (
         <ProductsPage product={product} />
       ))}
