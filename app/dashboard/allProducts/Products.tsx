@@ -9,13 +9,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Product } from "../../../types/product";
-import { AiOutlineEdit } from "react-icons/ai";
 import { MdOutlineDeleteForever } from "react-icons/md";
-import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import { IoCloseSharp } from "react-icons/io5";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import ModalForm from "./ModalForm";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -140,9 +139,10 @@ const Products = () => {
               rows?.map((row: Product) => (
                 <StyledTableRow key={row.name}>
                   <StyledTableCell align="center">
+                    {/* error - to remove divs or text tags... */}
                     <div className="flex items-center gap-2">
                       <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                        <AiOutlineEdit />
+                        <ModalForm />
                       </button>
                       <button
                         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
