@@ -1,12 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, forwardRef, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { Category } from "@prisma/client";
 import { CldUploadButton } from "next-cloudinary";
 import { BsUpload } from "react-icons/bs";
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import { IoCloseSharp } from "react-icons/io5";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
 export default function AddProduct() {
   //   const formik = useFormik({
@@ -39,21 +43,74 @@ export default function AddProduct() {
   //   });
   // q: Why photo upload is not working? // A: Because the form is not multipart/form-data
 
+  const Alert = forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [images, setImages] = useState("");
+  const [open, setOpen] = useState(false);
+  const [openError, setOpenError] = useState(false);
+
+  const handleSuccessClick = () => {
+    setOpen(true);
+  };
+
+  const handleErrorClick = () => {
+    setOpenError(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const action = (
+    <Fragment>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <IoCloseSharp fontSize="small" />
+      </IconButton>
+    </Fragment>
+  );
 
   async function createProduct(ev) {
     ev.preventDefault();
     const data = { name, category, description, price, images };
-    await axios.post("/api/addProduct", data);
-    setName("");
-    setCategory("");
-    setDescription("");
-    setPrice("");
-    setImages("");
+    // await axios.post("/api/addProduct", data);
+    try {
+      const res = await fetch("/api/addProduct", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (res.status === 201 || res.status === 200) {
+        handleSuccessClick();
+        setName("");
+        setCategory("");
+        setDescription("");
+        setPrice("");
+        setImages("");
+      } else {
+        handleErrorClick();
+        throw new Error("Error in creating product");
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   function handleUploadSuccess(result) {
@@ -62,14 +119,14 @@ export default function AddProduct() {
   }
 
   return (
-    <div className="bg-slate-500  flex justify-center py-16">
+    <div className="flex justify-center">
       <form
         onSubmit={createProduct}
         encType="multipart/form-data"
-        className="border border-teal-700 p-8 my-2 rounded-lg bg-slate-800"
+        className="border border-teal-700 p-8 my-16 rounded-lg bg-slate-800"
       >
         <div className="flex flex-col justify-center">
-          <label htmlFor="name" className="pt-2 pb-1">
+          <label htmlFor="name" className="pt-2 pb-1 text-white">
             Name
           </label>
           <input
@@ -81,7 +138,7 @@ export default function AddProduct() {
           />
         </div>
         <div className="flex flex-col justify-center">
-          <label htmlFor="category" className="pt-2 pb-1">
+          <label htmlFor="category" className="pt-2 pb-1 text-white">
             Category
           </label>
           <select
@@ -99,7 +156,7 @@ export default function AddProduct() {
           </select>
         </div>
         <div className="flex flex-col justify-center">
-          <label htmlFor="description" className="pt-2 pb-1">
+          <label htmlFor="description" className="pt-2 pb-1 text-white">
             Description
           </label>
           <textarea
@@ -113,7 +170,7 @@ export default function AddProduct() {
           />
         </div>
         <div className="flex flex-col justify-center">
-          <label htmlFor="price" className="pt-2 pb-1">
+          <label htmlFor="price" className="pt-2 pb-1 text-white">
             Price
           </label>
           <input
@@ -126,7 +183,7 @@ export default function AddProduct() {
             onChange={(e) => setPrice(e.target.value)}
           />
         </div>
-        <label htmlFor="file" className="pt-2 pb-1">
+        <label htmlFor="file" className="pt-2 pb-1 text-white">
           Photo
         </label>
         <div className="flex justify-center">
@@ -151,12 +208,22 @@ export default function AddProduct() {
         <div className="text-center">
           <button
             type="submit"
-            className="my-2 px-4 py-2 bg-teal-700 rounded-md"
+            className="my-2 px-4 py-2 bg-teal-600 rounded-md text-white hover:bg-teal-800 hover:translate-y-2 ease-in-out transition-all duration-300"
           >
             Save Product
           </button>
         </div>
       </form>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          Product saved successfully!
+        </Alert>
+      </Snackbar>
+      <Snackbar open={openError} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+          Error in deletind product!
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

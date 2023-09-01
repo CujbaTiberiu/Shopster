@@ -12,10 +12,10 @@ const DashNav = () => {
         </Link>
       </div>
       <div className="flex justify-between items-center">
-        <Link href={"/dashboard/AddProduct"} className="text-white flex mx-2">
+        <Link href={"/dashboard"} className="text-white flex mx-2">
           Dashboard
         </Link>
-        <Link href={"/dashboard/AllProducts"} className="text-white flex mx-2">
+        <Link href={"/dashboard/allProducts"} className="text-white flex mx-2">
           Products
         </Link>
         <Link href={"/orders"} className="text-white flex mx-2">
