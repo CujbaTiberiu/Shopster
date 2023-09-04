@@ -17,8 +17,17 @@ export const cartSlice = createSlice({
       state.items.push(action.payload);
     },
     removeFromCart: (state, action: PayloadAction<Product>) => {
-      state.items = state.items.filter((item) => item.id !== action.payload.id);
+      const indexToRemove = state.items.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      if (indexToRemove !== -1) {
+        state.items = [
+          ...state.items.slice(0, indexToRemove),
+          ...state.items.slice(indexToRemove + 1),
+        ];
+      }
     },
+
     default: (state) => {
       return state;
     },

@@ -27,7 +27,7 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ product }) => {
   return (
     <Card
       sx={{ maxWidth: 300 }}
-      className="bg-cyan-950 pt-2 mt-2 text-white shadow-lg shadow-teal-900 hover:shadow-teal-600 hover:scale-105 transition duration-500 ease-in-out border border-sky-400"
+      className="bg-cyan-950 mt-2 text-white shadow-lg shadow-teal-900 hover:shadow-teal-600 hover:scale-105 transition duration-500 ease-in-out border border-sky-400"
     >
       <CardMedia
         className="rounded-lg"

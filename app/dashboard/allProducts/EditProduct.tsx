@@ -85,15 +85,17 @@ const EditProduct = ({ ProductId, getProducts }) => {
       console.error("Error editing product:", error);
     }
   };
+  console.log(formData);
 
   function handleUploadSuccess(result) {
     const uploadedImage = result.info.secure_url;
-    setFormData({
-      ...formData,
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       images: uploadedImage,
-    });
+    }));
   }
 
+  console.log(formData);
   const handleSuccessClick = () => {
     setOpenSuccess(true);
   };

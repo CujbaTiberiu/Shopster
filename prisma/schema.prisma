@@ -71,6 +71,7 @@ model Product {
   category    Category
   images      String?
   published   Boolean  @default(false)
+  // quantity    Int      @default(1)
 }
 
 model VerificationToken {

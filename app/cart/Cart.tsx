@@ -33,7 +33,7 @@ const Cart = () => {
   );
 
   const calculateProductQuantity = (productId, productList) => {
-    return productList.reduce((acc, prod) => {
+    return productList?.reduce((acc, prod) => {
       if (prod.id === productId) {
         return acc + 1;
       }
@@ -50,7 +50,8 @@ const Cart = () => {
   //   dispatch(addToCart(product));
   // };
 
-  const removeFromCartHandler = (prods, uniqueProductId) => {
+  const removeFromCartHandler = (prods, index) => {
+    const uniqueProductId = prods[index].id;
     const newProducts = prods.filter((p) => p.id === uniqueProductId);
     dispatch(removeFromCart(newProducts[0]));
   };
@@ -90,7 +91,10 @@ const Cart = () => {
                     <FaArrowAltCircleLeft
                       className="text-red-500 cursor-pointer"
                       onClick={() =>
-                        removeFromCartHandler(products, uniqueProduct.id)
+                        removeFromCartHandler(
+                          products,
+                          products.indexOf(uniqueProduct)
+                        )
                       }
                     />{" "}
                     {calculateProductQuantity(uniqueProduct.id, products)}{" "}

@@ -18,9 +18,6 @@ const DashNav = () => {
         <Link href={"/dashboard/allProducts"} className="text-white flex mx-2">
           Products
         </Link>
-        <Link href={"/orders"} className="text-white flex mx-2">
-          Orders
-        </Link>
       </div>
     </div>
   );
