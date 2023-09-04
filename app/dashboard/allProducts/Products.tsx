@@ -141,9 +141,7 @@ const Products = () => {
                   <StyledTableCell align="center">
                     {/* error - to remove divs or text tags... */}
                     <div className="flex items-center gap-2">
-                      <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                        <ModalForm />
-                      </button>
+                      <ModalForm ProductId={row.id} getProducts={getProducts} />
                       <button
                         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                         onClick={() => deleteProduct(row.id.toString())}

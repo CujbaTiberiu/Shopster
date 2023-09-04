@@ -4,8 +4,12 @@ import { Product } from "../../../types/product";
 import { Category } from "@prisma/client";
 import { CldUploadButton } from "next-cloudinary";
 import { BsUpload } from "react-icons/bs";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { Snackbar } from "@mui/material";
 
-const EditProduct = () => {
+const EditProduct = ({ ProductId, getProducts }) => {
+  const [openSuccess, setOpenSuccess] = useState(false);
+  const [openError, setOpenError] = useState(false);
   const [formData, setFormData] = useState({
     id: "",
     name: "",
@@ -18,28 +22,50 @@ const EditProduct = () => {
     published: false,
   } as Product);
 
-  const getProducts = async () => {
-    const response = await fetch("http://localhost:3000/api/getProducts");
-    const data = await response.json();
-    const products = data.products;
-    setFormData({
-      ...formData,
-      name: products.name,
-      category: products.category,
-      description: products.description,
-      price: products.price,
-      images: products.images,
-    });
-  };
+  console.log(ProductId);
 
   useEffect(() => {
-    getProducts();
-  }, []);
+    async function getProduct() {
+      try {
+        const response = await fetch(`/api/getSingleProduct?id=${ProductId}`);
+        if (response.ok) {
+          const data = await response.json();
+          const product = data.product;
+          setFormData({
+            id: product.id,
+            name: product.name,
+            category: product.category,
+            description: product.description,
+            price: product.price,
+            images: product.images,
+            updatedAt: product.updatedAt,
+            createdAt: product.createdAt,
+            published: product.published,
+          });
+        } else {
+          console.error("Errore nel recupero del prodotto");
+        }
+      } catch (error) {
+        console.error("Errore nel recupero del prodotto:", error);
+      }
+    }
 
-  const editProductHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    if (ProductId) {
+      getProduct();
+    }
+  }, [ProductId]);
+
+  const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref
+  ) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
+  const editProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const res = await fetch(`/api/editProduct`, {
+      const res = await fetch(`/api/modifyProduct`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -48,8 +74,11 @@ const EditProduct = () => {
       });
       if (res.status === 201) {
         const editedProduct = await res.json();
+        handleSuccessClick();
         console.log("Edited Product:", editedProduct);
+        getProducts();
       } else {
+        handleErrorClick();
         console.error("Error editing product:", res.statusText);
       }
     } catch (error) {
@@ -65,10 +94,30 @@ const EditProduct = () => {
     });
   }
 
+  const handleSuccessClick = () => {
+    setOpenSuccess(true);
+  };
+
+  const handleErrorClick = () => {
+    setOpenError(true);
+  };
+
+  const handleClose = (
+    event: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSuccess(false);
+    setOpenError(false);
+  };
+
   return (
     <div className="flex justify-center">
       <form
-        onSubmit={editProductHandler}
+        onSubmit={editProduct}
         encType="multipart/form-data"
         className="border border-teal-700 p-8 my-16 rounded-lg bg-slate-800"
       >
@@ -80,7 +129,7 @@ const EditProduct = () => {
             className="rounded-md py-2"
             type="name"
             value={formData.name}
-            placeholder="Product name"
+            placeholder={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           />
         </div>
@@ -166,6 +215,20 @@ const EditProduct = () => {
           </button>
         </div>
       </form>
+      <Snackbar
+        open={openSuccess}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          Product edited successfully!
+        </Alert>
+      </Snackbar>
+      <Snackbar open={openError} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+          Error in editing product!
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
