@@ -22,10 +22,28 @@ export default async function Products() {
   console.log("Products fetch:", products);
 
   return (
-    <div className="grid place-content-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:mx-10 py-10">
-      {products?.map((product: Product) => (
-        <ProductsPage product={product} />
-      ))}
-    </div>
+    <>
+      <h2 className="text-2xl text-white ms-4 border-b-2 border-teal-700 w-44">
+        Smarthphone
+      </h2>
+      <div className="grid place-content-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:mx-10 py-10">
+        {products
+          ?.filter((product) => product.category === "SMARTPHONE")
+          .map((product: Product) => (
+            <ProductsPage product={product} />
+          ))}
+      </div>
+
+      <h2 className="text-2xl text-white ms-4 border-b-2 border-teal-700 w-24">
+        Laptop
+      </h2>
+      <div className="grid place-content-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:mx-10 py-10">
+        {products
+          ?.filter((product) => product.category === "LAPTOP")
+          .map((product: Product) => (
+            <ProductsPage product={product} />
+          ))}
+      </div>
+    </>
   );
 }

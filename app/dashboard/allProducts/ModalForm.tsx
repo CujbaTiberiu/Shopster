@@ -8,16 +8,20 @@ import { AiOutlineEdit } from "react-icons/ai";
 import EditProduct from "./EditProduct";
 
 const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "50%",
-  outerHeight: 400,
+  position: "sticky",
+  top: "2%",
+  left: "30%",
+  rigth: "50%",
+  bottom: "2%",
+  //transform: "translate(-50%, -50%)",
+  width: "40%",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
+  maxHeight: "96vh",
+  overflowY: "auto",
+  borderRadius: "10px",
 };
 
 const ModalForm = ({ ProductId, getProducts }) => {
@@ -40,9 +44,14 @@ const ModalForm = ({ ProductId, getProducts }) => {
         aria-describedby="modal-modal-description"
         className="h-full"
       >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
+        <Box sx={style} className="mui-fixed">
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            className="text-2xl text-center bg-teal-700 py-2 px-3 rounded-md text-white"
+          >
+            Edit exisiting product
           </Typography>
           <EditProduct ProductId={ProductId} getProducts={getProducts} />
         </Box>

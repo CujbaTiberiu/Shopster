@@ -13,7 +13,7 @@ const DashNav = () => {
       </div>
       <div className="flex justify-between items-center">
         <Link href={"/dashboard"} className="text-white flex mx-2">
-          Dashboard
+          Add-Product
         </Link>
         <Link href={"/dashboard/allProducts"} className="text-white flex mx-2">
           Products

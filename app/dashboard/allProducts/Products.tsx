@@ -45,14 +45,15 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 const Products = () => {
   const [rows, setRows] = useState([]);
-  const [open, setOpen] = useState(false);
+  const [openSuccess, setOpenSuccess] = useState(false);
+  const [openError, setOpenError] = useState(false);
 
   const handleSuccessClick = () => {
-    setOpen(true);
+    setOpenSuccess(true);
   };
 
   const handleErrorClick = () => {
-    setOpen(true);
+    setOpenError(true);
   };
 
   const handleClose = (
@@ -63,9 +64,9 @@ const Products = () => {
       return;
     }
 
-    setOpen(false);
+    setOpenSuccess(false);
+    setOpenError(false);
   };
-
   const action = (
     <React.Fragment>
       <IconButton
@@ -172,16 +173,20 @@ const Products = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+      <Snackbar
+        open={openSuccess}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
           Product deleted successfully!
         </Alert>
       </Snackbar>
-      {/* <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+      <Snackbar open={openError} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
           Error in deletind product!
         </Alert>
-      </Snackbar> */}
+      </Snackbar>
     </div>
   );
 };

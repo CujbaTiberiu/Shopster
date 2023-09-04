@@ -119,7 +119,7 @@ const EditProduct = ({ ProductId, getProducts }) => {
       <form
         onSubmit={editProduct}
         encType="multipart/form-data"
-        className="border border-teal-700 p-8 my-16 rounded-lg bg-slate-800"
+        className="border border-teal-700 p-8 my-8 rounded-lg bg-slate-800"
       >
         <div className="flex flex-col justify-center">
           <label htmlFor="name" className="pt-2 pb-1 text-white">
@@ -209,7 +209,7 @@ const EditProduct = ({ ProductId, getProducts }) => {
         <div className="text-center">
           <button
             type="submit"
-            className="my-2 px-4 py-2 bg-teal-600 rounded-md text-white hover:bg-teal-800 hover:translate-y-2 ease-in-out transition-all duration-300"
+            className="my-2 px-4 py-2 mt-5 bg-teal-600 rounded-md text-white hover:bg-teal-800 hover:translate-y-2 ease-in-out transition-all duration-300"
           >
             Save Changes
           </button>

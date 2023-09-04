@@ -119,7 +119,7 @@ export default function AddProduct() {
   }
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center pt-8">
       <form
         onSubmit={createProduct}
         encType="multipart/form-data"
@@ -174,7 +174,7 @@ export default function AddProduct() {
             Price
           </label>
           <input
-            className="rounded-md py-2"
+            className="rounded-md py-2 pb-2"
             type="number"
             value={price}
             min="0"
@@ -183,7 +183,7 @@ export default function AddProduct() {
             onChange={(e) => setPrice(e.target.value)}
           />
         </div>
-        <label htmlFor="file" className="pt-2 pb-1 text-white">
+        <label htmlFor="file" className="py-2 text-white">
           Photo
         </label>
         <div className="flex justify-center">
