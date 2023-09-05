@@ -26,7 +26,7 @@ const Footer = () => {
             <FaGithubSquare />
           </a>
           <a
-            href="https://cujbatiberiu-webdev-portfolio.netlify.app/"
+            href="https://cujba-tiberiu-webdev-portfolio.netlify.app/"
             className="mx-5 hover:translate-x-1 ease-in-out duration-500"
           >
             <RiPagesLine />

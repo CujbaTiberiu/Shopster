@@ -16,15 +16,29 @@ import { useSelector } from "react-redux";
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { addToCart, removeFromCart } from "../../redux/reducers/cartSlice";
+import { redirect } from "next/navigation";
 
 const Cart = () => {
   const products = useSelector((state: RootState) => state.cartSlice.items);
   console.log("Products:", products);
 
   const paymentHandler = async () => {
-    await axios.post("/api/checkout_session", {
-      products,
-    });
+    try {
+      const response = await axios.post("/api/checkout_session", {
+        products,
+      });
+      if (response.status === 200) {
+        console.log(response.data);
+        const url = response.data.url;
+        console.log("URL:", url);
+        window.location.href = url;
+      }
+    } catch (error) {
+      console.error(
+        "Errore durante la creazione della sessione di checkout:",
+        error
+      );
+    }
   };
 
   const uniqueProducts = products?.filter(
