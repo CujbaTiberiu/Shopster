@@ -5,8 +5,8 @@ import { signOut } from "next-auth/react";
 
 export default function Logged({ session }) {
   return (
-    <div className="flex items-center gap-4 mt-2">
-      <h1>{session.user.name}</h1>
+    <div className="flex items-center gap-4">
+      {/* <h1>{session.user.name}</h1> */}
       <Image
         width={500}
         height={500}
@@ -15,7 +15,7 @@ export default function Logged({ session }) {
         alt={session.user.name + "image"}
       ></Image>
       <button
-        className="text-sm px-4 py-2 bg-teal-900 rounded-lg"
+        className="text-sm px-4 py-2 bg-teal-900 rounded-lg hover:-translate-y-1 ease-in-out duration-500"
         onClick={() => signOut()}
       >
         Sign Out

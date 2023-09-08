@@ -1,14 +1,6 @@
 "use client";
 import { RootState } from "../../redux/store/store";
 import { Product } from "../../types/product";
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Typography,
-} from "@mui/material";
 import axios from "axios";
 import Image from "next/image";
 import React from "react";
@@ -16,7 +8,7 @@ import { useSelector } from "react-redux";
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { addToCart, removeFromCart } from "../../redux/reducers/cartSlice";
-import { redirect } from "next/navigation";
+import { HiArrowNarrowRight } from "react-icons/hi";
 
 const Cart = () => {
   const products = useSelector((state: RootState) => state.cartSlice.items);
@@ -133,10 +125,10 @@ const Cart = () => {
           <div className=" flex justify-center pb-4">
             <button
               type="button"
-              className="py-2 px-3 bg-green-300 text-xl rounded-md"
+              className="flex justify-center items-center gap-2 py-2 px-3 bg-green-300 text-xl rounded-md hover:bg-green-400 hover:translate-x-1 ease-in-out duration-500"
               onClick={paymentHandler}
             >
-              Go to payment
+              Go to payment <HiArrowNarrowRight />
             </button>
           </div>
         </>

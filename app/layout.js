@@ -10,6 +10,7 @@ export const metadata = {
   title: 'Shopster',
   description: 'E-commerce store built with Next.js, Redux, Tailwind CSS, Prisma and Stripe',
 }
+//q: is this component that i should wrap with session provider?
 
 export default function RootLayout({ children }) {
   return (
