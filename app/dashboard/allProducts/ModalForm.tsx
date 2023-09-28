@@ -1,11 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
 import { AiOutlineEdit } from "react-icons/ai";
 import EditProduct from "./EditProduct";
+import { useDisclosure } from "@mantine/hooks";
+import { Modal, Button } from "@mantine/core";
 
 const style = {
   position: "sticky",
@@ -25,36 +23,30 @@ const style = {
 };
 
 const ModalForm = ({ ProductId, getProducts }) => {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  // const [open, setOpen] = useState(false);
+  // const handleOpen = () => setOpen(true);
+  // const handleClose = () => setOpen(false);
+  const [opened, { open, close }] = useDisclosure(false);
 
   return (
     <div>
       <button
-        onClick={handleOpen}
+        onClick={open}
         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
       >
         <AiOutlineEdit />
       </button>
       <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        className="h-full"
+        opened={opened}
+        onClose={close}
+        title="Modify Product"
+        centered
+        overlayProps={{
+          backgroundOpacity: 0.55,
+          blur: 3,
+        }}
       >
-        <Box sx={style} className="mui-fixed">
-          <Typography
-            id="modal-modal-title"
-            variant="h6"
-            component="h2"
-            className="text-2xl text-center bg-teal-700 py-2 px-3 rounded-md text-white"
-          >
-            Edit exisiting product
-          </Typography>
-          <EditProduct ProductId={ProductId} getProducts={getProducts} />
-        </Box>
+        <EditProduct ProductId={ProductId} getProducts={getProducts} />
       </Modal>
     </div>
   );

@@ -9,7 +9,7 @@ export default async function Dashboard() {
   const session = await getServerSession(outhOptions);
 
   return (
-    <main className="bg-slate-900 h-screen w-screen">
+    <main className="bg-white">
       {session?.user?.roles.includes("ADMIN") ? (
         <>
           <DashNav />

@@ -8,7 +8,7 @@ import Unauthorized from "../Unauthorized";
 export default async function Dashboard() {
   const session = await getServerSession(outhOptions);
   return (
-    <main className="bg-slate-900 h-full w-screen">
+    <main className="bg-slate-900">
       {session?.user?.roles.includes("ADMIN") ? (
         <>
           <DashNav />

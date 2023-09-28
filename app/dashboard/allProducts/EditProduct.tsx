@@ -4,12 +4,10 @@ import { Product } from "../../../types/product";
 import { Category } from "@prisma/client";
 import { CldUploadButton } from "next-cloudinary";
 import { BsUpload } from "react-icons/bs";
-import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import { Snackbar } from "@mui/material";
+import { IconX, IconCheck } from "@tabler/icons-react";
+import { Box, Notification, rem } from "@mantine/core";
 
 const EditProduct = ({ ProductId, getProducts }) => {
-  const [openSuccess, setOpenSuccess] = useState(false);
-  const [openError, setOpenError] = useState(false);
   const [formData, setFormData] = useState({
     id: "",
     name: "",
@@ -23,6 +21,8 @@ const EditProduct = ({ ProductId, getProducts }) => {
   } as Product);
 
   console.log(ProductId);
+  const xIcon = <IconX style={{ width: rem(20), height: rem(20) }} />;
+  const checkIcon = <IconCheck style={{ width: rem(20), height: rem(20) }} />;
 
   useEffect(() => {
     async function getProduct() {
@@ -55,13 +55,6 @@ const EditProduct = ({ ProductId, getProducts }) => {
     }
   }, [ProductId]);
 
-  const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-    props,
-    ref
-  ) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-  });
-
   const editProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -74,11 +67,10 @@ const EditProduct = ({ ProductId, getProducts }) => {
       });
       if (res.status === 201) {
         const editedProduct = await res.json();
-        handleSuccessClick();
+
         console.log("Edited Product:", editedProduct);
         getProducts();
       } else {
-        handleErrorClick();
         console.error("Error editing product:", res.statusText);
       }
     } catch (error) {
@@ -95,29 +87,8 @@ const EditProduct = ({ ProductId, getProducts }) => {
     }));
   }
 
-  console.log(formData);
-  const handleSuccessClick = () => {
-    setOpenSuccess(true);
-  };
-
-  const handleErrorClick = () => {
-    setOpenError(true);
-  };
-
-  const handleClose = (
-    event: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpenSuccess(false);
-    setOpenError(false);
-  };
-
   return (
-    <div className="flex justify-center">
+    <Box maw={340} mx="auto">
       <form
         onSubmit={editProduct}
         encType="multipart/form-data"
@@ -217,21 +188,7 @@ const EditProduct = ({ ProductId, getProducts }) => {
           </button>
         </div>
       </form>
-      <Snackbar
-        open={openSuccess}
-        autoHideDuration={6000}
-        onClose={handleClose}
-      >
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          Product edited successfully!
-        </Alert>
-      </Snackbar>
-      <Snackbar open={openError} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-          Error in editing product!
-        </Alert>
-      </Snackbar>
-    </div>
+    </Box>
   );
 };
 

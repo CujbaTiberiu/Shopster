@@ -1,16 +1,16 @@
 "use client";
 
-import { Fragment, forwardRef, useState } from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import axios from "axios";
+// import { useFormik } from "formik";
+// import * as Yup from "yup";
+// import axios from "axios";
+import { useState } from "react";
 import { Category } from "@prisma/client";
 import { CldUploadButton } from "next-cloudinary";
 import { BsUpload } from "react-icons/bs";
-import Snackbar from "@mui/material/Snackbar";
-import IconButton from "@mui/material/IconButton";
-import { IoCloseSharp } from "react-icons/io5";
-import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { IconX, IconCheck } from "@tabler/icons-react";
+import { rem } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
+import { NumberInput, TextInput, Button, Box } from "@mantine/core";
 
 export default function AddProduct() {
   //   const formik = useFormik({
@@ -43,46 +43,32 @@ export default function AddProduct() {
   //   });
   // q: Why photo upload is not working? // A: Because the form is not multipart/form-data
 
-  const Alert = forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-  });
+  const xIcon = <IconX style={{ width: rem(20), height: rem(20) }} />;
+  const checkIcon = <IconCheck style={{ width: rem(20), height: rem(20) }} />;
 
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [images, setImages] = useState("");
-  const [open, setOpen] = useState(false);
-  const [openError, setOpenError] = useState(false);
 
   const handleSuccessClick = () => {
-    setOpen(true);
+    notifications.show({
+      title: "Product saved successfully!",
+      message: `You have successfully saved: ${name}`,
+      style: {
+        position: "fixed",
+        top: 100,
+        right: 20,
+        zIndex: 1000,
+      },
+      color: "teal",
+      icon: checkIcon,
+      autoClose: 5000,
+      radius: "md",
+      withCloseButton: true,
+    });
   };
-
-  const handleErrorClick = () => {
-    setOpenError(true);
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
-  };
-
-  const action = (
-    <Fragment>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <IoCloseSharp fontSize="small" />
-      </IconButton>
-    </Fragment>
-  );
 
   async function createProduct(ev) {
     ev.preventDefault();
@@ -119,7 +105,7 @@ export default function AddProduct() {
   }
 
   return (
-    <div className="flex justify-center pt-8">
+    <Box maw={340} mx="auto" className="pt-8">
       <form
         onSubmit={createProduct}
         encType="multipart/form-data"
@@ -214,16 +200,6 @@ export default function AddProduct() {
           </button>
         </div>
       </form>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          Product saved successfully!
-        </Alert>
-      </Snackbar>
-      <Snackbar open={openError} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-          Error in deletind product!
-        </Alert>
-      </Snackbar>
-    </div>
+    </Box>
   );
 }

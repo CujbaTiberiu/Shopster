@@ -14,9 +14,11 @@ export default async function Home() {
   // console.log(user);
 
   return (
-    <main className="bg-slate-900">
+    <main>
       <Nav />
-      <Hero />
+      <div className="bg-slate-950">
+        <Hero />
+      </div>
       <Products />
       {/* {user?.roles.includes("ADMIN") ? <AddProduct /> : <h1>Hello</h1>} */}
       <Footer />

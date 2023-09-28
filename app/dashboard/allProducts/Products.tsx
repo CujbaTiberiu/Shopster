@@ -1,90 +1,39 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { styled } from "@mui/material/styles";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import { Product } from "../../../types/product";
 import { MdOutlineDeleteForever } from "react-icons/md";
-import Snackbar from "@mui/material/Snackbar";
-import IconButton from "@mui/material/IconButton";
 import { IoCloseSharp } from "react-icons/io5";
-import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import ModalForm from "./ModalForm";
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
-
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  props,
-  ref
-) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+import { IconX, IconCheck } from "@tabler/icons-react";
+import { Button, Notification, rem, Table } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 
 const Products = () => {
   const [rows, setRows] = useState([]);
-  const [openSuccess, setOpenSuccess] = useState(false);
-  const [openError, setOpenError] = useState(false);
-
-  const handleSuccessClick = () => {
-    setOpenSuccess(true);
-  };
-
-  const handleErrorClick = () => {
-    setOpenError(true);
-  };
-
-  const handleClose = (
-    event: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpenSuccess(false);
-    setOpenError(false);
-  };
-  const action = (
-    <React.Fragment>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <IoCloseSharp fontSize="small" />
-      </IconButton>
-    </React.Fragment>
-  );
 
   const getProducts = async () => {
     const res = await fetch("http://localhost:3000/api/getProducts");
     const products = await res.json();
     console.log(products);
     setRows(products.products);
+  };
+
+  const xIcon = <IconX style={{ width: rem(20), height: rem(20) }} />;
+  const checkIcon = <IconCheck style={{ width: rem(20), height: rem(20) }} />;
+
+  const showNotification = (name) => {
+    notifications.show({
+      title: "Product deleted successfully!",
+      message: ` Product name : ${name}`,
+      color: "teal",
+      style: {
+        position: "fixed",
+        top: 100,
+        right: 20,
+        zIndex: 1000,
+      },
+      // icon: checkIcon,
+    });
   };
 
   const deleteProduct = async (id: string) => {
@@ -101,10 +50,9 @@ const Products = () => {
         // Handle successful deletion
         const deletedProduct = await res.json();
         console.log("Deleted Product:", deletedProduct);
-        handleSuccessClick();
+
         getProducts();
       } else {
-        handleErrorClick();
         console.error("Error deleting product:", res.statusText);
       }
     } catch (error) {
@@ -117,76 +65,70 @@ const Products = () => {
   }, []);
 
   return (
-    <div className="py-24 mx-10">
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 700 }} aria-label="customized table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell align="center">Actions</StyledTableCell>
-              <StyledTableCell align="center">Id</StyledTableCell>
-              <StyledTableCell align="center">Name</StyledTableCell>
-              <StyledTableCell align="center">Category</StyledTableCell>
-              <StyledTableCell align="center">Price&nbsp;(€)</StyledTableCell>
-              <StyledTableCell align="center">
-                Created At&nbsp;(date)
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                Updated At&nbsp;(date)
-              </StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
+    <div className="py-24 mx-10 text-white">
+      <Table.ScrollContainer minWidth={500} type="native">
+        <Table>
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>Actions</Table.Th>
+              <Table.Th>Id</Table.Th>
+              <Table.Th>Name</Table.Th>
+              <Table.Th>Category</Table.Th>
+              <Table.Th>Price&nbsp;(€)</Table.Th>
+              <Table.Th>Created At&nbsp;(date)</Table.Th>
+              <Table.Th>Updated At&nbsp;(date)</Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
             {rows.length > 0 ? (
               rows?.map((row: Product) => (
-                <StyledTableRow key={row.name}>
-                  <StyledTableCell align="center">
+                <Table.Tr key={row.name}>
+                  <Table.Td>
                     {/* error - to remove divs or text tags... */}
                     <div className="flex items-center gap-2">
                       <ModalForm ProductId={row.id} getProducts={getProducts} />
                       <button
                         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                        onClick={() => deleteProduct(row.id.toString())}
+                        onClick={() => {
+                          deleteProduct(row.id.toString());
+                          showNotification(row.name);
+                        }}
                       >
                         <MdOutlineDeleteForever />
                       </button>
                     </div>
-                  </StyledTableCell>
-                  <StyledTableCell component="th" scope="row" align="center">
-                    {row.id}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">{row.name}</StyledTableCell>
-                  <StyledTableCell align="center">
-                    {row.category}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">{row.price}</StyledTableCell>
-                  <StyledTableCell align="center">
-                    {row.createdAt}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {row.updatedAt}
-                  </StyledTableCell>
-                </StyledTableRow>
+                  </Table.Td>
+                  <Table.Td>{row.id}</Table.Td>
+                  <Table.Td>{row.name}</Table.Td>
+                  <Table.Td>{row.category}</Table.Td>
+                  <Table.Td>{row.price}</Table.Td>
+                  <Table.Td>{row.createdAt}</Table.Td>
+                  <Table.Td>{row.updatedAt}</Table.Td>
+                </Table.Tr>
               ))
             ) : (
               <div>loading...</div>
             )}
-          </TableBody>
+          </Table.Tbody>
         </Table>
-      </TableContainer>
-      <Snackbar
-        open={openSuccess}
-        autoHideDuration={6000}
-        onClose={handleClose}
+      </Table.ScrollContainer>
+      {/* <Notification
+        onClose={() => handleClose}
+        icon={xIcon}
+        color="red"
+        title="Bummer!"
       >
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          Product deleted successfully!
-        </Alert>
-      </Snackbar>
-      <Snackbar open={openError} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-          Error in deletind product!
-        </Alert>
-      </Snackbar>
+        Something went wrong
+      </Notification>
+      <Notification
+        onClose={() => handleClose}
+        icon={checkIcon}
+        color="teal"
+        title="All good!"
+        mt="md"
+      >
+        Everything is fine
+      </Notification> */}
     </div>
   );
 };
